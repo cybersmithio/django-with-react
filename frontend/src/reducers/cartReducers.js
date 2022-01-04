@@ -27,7 +27,6 @@ export const cartReducer = (state={cartItems: []}, action) => {
             }
 
         default:
-            console.log("Unexpected cart reducer action type")
             return state
     }
 }
