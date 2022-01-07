@@ -46,6 +46,23 @@ def registerUser(request):
         message = {'detail': 'User could not be created (for some reason)'}
         return Response(message,status=status.HTTP_400_BAD_REQUEST)
 
+@api_view(['PUT'])
+@permission_classes([IsAuthenticated])
+def updateUserProfile(request):
+    user = request.user
+
+    serializer = UserSerializerWithToken(user, many=False)
+    data = request.data
+    user.first_name = data['name']
+    user.email = data['email']
+    user.username = data['email']
+
+    if data['password'] != '':
+        user.password = make_password(data['password'])
+    
+    user.save()
+
+    return Response(serializer.data)
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
