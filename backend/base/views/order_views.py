@@ -40,7 +40,7 @@ def addOrderItems(request):
         # Create order items and connect to order
         for i in orderItems:
             product=Product.objects.get(_id=i['product'])
-            item=OrderItem.object.create(
+            item=OrderItem.objects.create(
                 product=product,
                 order=order,
                 name=product.name,
@@ -53,5 +53,5 @@ def addOrderItems(request):
             product.countInStock -= item.qty
             product.save()
 
-    serializer = OrderSerializer(order, many=True)
-    return Response(serializer.data)
+        serializer = OrderSerializer(order, many=False)
+        return Response(serializer.data)
