@@ -1,14 +1,12 @@
 from django.shortcuts import render
-
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.fields import DateField
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
-
 from base.models import Product, Order, OrderItem, ShippingAddress
 from base.serializers import ProductSerializer, OrderSerializer
-
 from rest_framework import serializers, status
+from datetime import datetime
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
@@ -71,3 +69,12 @@ def getOrderById(request, pk):
     except:
         Response({'detail': 'Order does not exist'}, status=status.HTTP_400_BAD_REQUEST)
 
+@api_view(['PUT'])
+@permission_classes([IsAuthenticated])
+def updateOrderToPaid(request, pk):
+    order = Order.objects.get(_id=pk)
+
+    order.isPaid = True
+    order.paidAt = datetime.now()
+    order.save()
+    return Response('Order was paid')
