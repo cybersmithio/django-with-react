@@ -85,7 +85,7 @@ function UserListScreen({history}) {
                                             <i className='fas fa-times' style={{color:'red'}}></i>
                                         )}</td>
                                         <td>
-                                            <LinkContainer to={`/admin/user/${user.id}`}>
+                                            <LinkContainer to={`/admin/user/${user.id}/edit/`}>
                                                 <Button variant='light' className='btn-sm'>
                                                     <i className='fas fa-edit'></i>
                                                 </Button>
