@@ -35,10 +35,8 @@ function ProfileScreen({history}) {
         if(!userInfo){
             history.push('/login')
         } else {
-            if (!user || !user.name || success) {
-                dispatch({
-                    type: USER_UPDATE_PROFILE_RESET
-                })
+            if (!user || !user.name || success || userInfo._id !== user._id ) {
+                dispatch({type: USER_UPDATE_PROFILE_RESET})
                 dispatch(getUserDetails('profile'))
                 dispatch(listMyOrders())
             } else {
