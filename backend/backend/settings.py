@@ -31,7 +31,12 @@ DEBUG = True
 # For production
 #DEBUG = False
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
-
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
+}
 
 # Application definition
 
@@ -123,17 +128,6 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('POSTGRESQL_DBNAME'),
-        'USER': os.getenv('POSTGRESQL_USER'),
-        'PASSWORD': os.getenv('POSTGRESQL_PASSWORD'),
-        'HOST': os.getenv('POSTGRESQL_HOST'),
-        'PORT': os.getenv('POSTGRESQL_PORT'),
-        'OPTIONS': {'sslmode': 'require'},
-    }
-}
 
 
 # Password validation
@@ -201,5 +195,16 @@ if os.getcwd() == '/app':
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
     SECURE_SSL_REDIRECT = True
     DEBUG=False
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': os.getenv('POSTGRESQL_DBNAME'),
+            'USER': os.getenv('POSTGRESQL_USER'),
+            'PASSWORD': os.getenv('POSTGRESQL_PASSWORD'),
+            'HOST': os.getenv('POSTGRESQL_HOST'),
+            'PORT': os.getenv('POSTGRESQL_PORT'),
+            'OPTIONS': {'sslmode': 'require'},
+        }
+    }
 
 
