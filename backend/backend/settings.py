@@ -21,12 +21,16 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-(ls*+53swrft$oi-)gv1z)mlk^x_)*cb1vjhmjj7-#fed0kayc'
+SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
+# For Dev
 DEBUG = True
+#ALLOWED_HOSTS = []
 
-ALLOWED_HOSTS = []
+# For production
+#DEBUG = False
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 
 
 # Application definition
@@ -38,9 +42,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'base.apps.BaseConfig',
     'rest_framework',
     'corsheaders',
+    'storages',
+    'base.apps.BaseConfig',
 ]
 
 REST_FRAMEWORK = {
@@ -84,6 +89,7 @@ SIMPLE_JWT = {
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -173,6 +179,7 @@ STATICFILES_DIRS = [
 ]
 
 MEDIA_ROOT = 'static/images'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
@@ -181,3 +188,14 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ALLOW_ALL_ORIGINS = True
 
+DEFAULT_FILE_STORAGE = 'storages.backends.azure_storage.AzureStorage'
+
+AZURE_ACCOUNT_NAME=os.getenv('AZURE_ACCOUNT_NAME')
+AZURE_ACCOUNT_KEY=os.getenv('AZURE_ACCOUNT_KEY')
+AZURE_CONTAINER=os.getenv('AZURE_CONTAINER')
+AZURE_SSL=True
+
+
+# If we're in a containerized environment
+if os.getcwd() == '/app':
+    DEBUG=False
